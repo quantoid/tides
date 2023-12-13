@@ -44,12 +44,10 @@ def get_forecast(when):
 
 
 def show_chart(forecast):
-    location = forecast['where']
-    zone = forecast['zone']
     sun = forecast['sun']
     tides = forecast['tides']
     if tides is None:
-        st.error("No tide data for selected location")
+        st.error("No tide data available for selected location")
         return
     # Get just the times of low and high tides.
     low = tides[tides["type"] == "low"].copy()
@@ -85,15 +83,18 @@ def show_table(forecast):
     )
     # Show safe periods in a table for small screens.
     tides = forecast['tides']
-    st.dataframe(
-        data=tides[tides['type'] == "low"][['day', 'earliest', 'latest']],
-        hide_index=True,
-        column_config={
-            'day': st.column_config.DateColumn(label="Day", width="medium", format="ddd D MMM YYYY"),
-            'earliest': st.column_config.DatetimeColumn(label="From", width="medium", format="h:mm a"),
-            'latest': st.column_config.DatetimeColumn(label="To", width="medium", format="h:mm a"),
-        },
-    )
+    if tides is None:
+        st.error("No tide data available for selected location")
+    else:
+        st.dataframe(
+            data=tides[tides['type'] == "low"][['day', 'earliest', 'latest']],
+            hide_index=True,
+            column_config={
+                'day': st.column_config.DateColumn(label="Day", width="medium", format="ddd D MMM YYYY"),
+                'earliest': st.column_config.DatetimeColumn(label="From", width="medium", format="h:mm a"),
+                'latest': st.column_config.DatetimeColumn(label="To", width="medium", format="h:mm a"),
+            },
+        )
     st.markdown(
         f"\n\nThe safest times are {safe_hours} hours either side of low tide and between dawn and dusk"
         " when there is less danger to wildlife, including the"

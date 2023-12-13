@@ -63,9 +63,18 @@ def sun_times(sun, zone):
 
 def tide_times(tides, sun, margin, zone):
     """
-    Interpolated height every minute over period covered by given tide times.
+    Enhance given tide times with additional details we need:
+
+    - Interpolated height every minute over period covered by given tide times.
+    - Dawn and dusk times on each date.
+    - Whether time is in safe period.
+    - Earliest and latest times of each safe period.
+
+    Trims data to between the earliest dusk and latest dawn.
 
     :param pd.DataFrame tides: low/high tide times (type=low|high)
+    :param pd.DataFrame sun: dawn and dusk times
+    :param int margin: safe days either side of low tide
     :param str zone: time-zone name provided with data
     :return pd.DataFrame: tides plus interpolated tide times (type=calc)
     """
