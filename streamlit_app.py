@@ -1,6 +1,7 @@
 """
 Show chart of tide heights with driving times that are safer for turtles.
 """
+from types import SimpleNamespace
 import streamlit as st
 import altair as alt
 import pandas as pd
@@ -8,6 +9,7 @@ import willy
 
 
 location_id = 17924
+time_zone = "Australia/Brisbane"
 look_ahead = 5
 safe_hours = 3
 time_format = "%I:%M %p on %a %d %b"
@@ -22,9 +24,9 @@ colour_days = "#767676"  # grey
 
 def main():
     with st.sidebar:
-        show_settings()
+        settings = show_settings()
     st.image("static/tread-lightly.png", use_column_width="always")
-    forecast = get_forecast(when=pd.Timestamp.now().date())
+    forecast = get_forecast(when=settings.start)
     show_chart(forecast)
     st.image("static/checklist.png", use_column_width="always")
     show_table(forecast)
@@ -32,15 +34,30 @@ def main():
 
 
 def show_settings():
+    settings = SimpleNamespace()
     st.image("static/biepa_logo_fullcolour_biepaonly.png")
     st.title("Tread Lightly")
     st.markdown("Turtle-friendly times to drive on the beach.")
+    today = pd.Timestamp.utcnow().tz_convert(time_zone).date()
+    friday = today + pd.Timedelta(days=(4 - today.weekday()) % 7)
+    settings.start = st.date_input(
+        key="start",
+        help="Choose a date from which to see safer driving times",
+        label="Start date",
+        value=friday,
+        format="YYYY-MM-DD",
+    )
+    return settings
 
 
 def get_forecast(when):
     # Get sun and tide data for next weekend.
-    thursday = when + pd.Timedelta(days=(3 - when.weekday()) % 7)
-    return willy.forecast(where=location_id, when=thursday, days=look_ahead, margin=safe_hours)
+    return willy.forecast(
+        where=location_id,
+        when=when - pd.Timedelta(days=1),
+        days=look_ahead,
+        margin=safe_hours,
+    )
 
 
 def show_chart(forecast):
