@@ -109,11 +109,9 @@ def show_table(forecast):
 def show_todo():
     # Our to do list.
     st.warning(
-        "To do:\n"
+        "Planned improvements:\n"
         "\n- Add [focus line on hover](https://altair-viz.github.io/gallery/multiline_tooltip.html)"
-        "\n- Add car icons at low tide."
-        "\n- Make dashboard full width by default."
-        "\n- Make this a separate dashboard."
+        "\n- Add green car icons at low tide."
         "\n- Select future date in sidebar."
         "\n- Select from predefined locations of 4WD beaches in sidebar."
     )
