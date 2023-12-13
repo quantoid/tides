@@ -154,7 +154,7 @@ def add_safety(tides, sun, margin):
     tides['day'] = tides['time'].dt.date
     tides = tides.merge(days, how="left", on='day')
     # Add whether 3 hours either side of low tide.
-    low_tide = (tides['type'] != "high") & (abs(tides['low'] - tides['time']) < margin)
+    low_tide = (tides['type'] != "high") & (abs(tides['low'] - tides['time']) < pd.Timedelta(hours=margin))
     in_daylight = (tides['time'] >= tides['dawn']) & (tides['time'] <= tides['dusk'])
     tides['safe'] = low_tide & in_daylight
     return tides

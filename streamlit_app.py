@@ -10,7 +10,6 @@ import willy
 location_id = 17924
 look_ahead = 5
 safe_hours = 3
-safe_margin = pd.Timedelta(hours=safe_hours)
 time_format = "%I:%M %p on %a %d %b"
 
 # Colours used on chart.
@@ -24,10 +23,10 @@ colour_days = "#767676"  # grey
 def main():
     with st.sidebar:
         show_settings()
-    st.image("static/tread-lightly.png")
+    st.image("static/tread-lightly.png", use_column_width="always")
     forecast = get_forecast(when=pd.Timestamp.now().date())
     show_chart(forecast)
-    st.image("static/checklist.png")
+    st.image("static/checklist.png", use_column_width="always")
     show_table(forecast)
     show_todo()
 
@@ -41,7 +40,7 @@ def show_settings():
 def get_forecast(when):
     # Get sun and tide data for next weekend.
     thursday = when + pd.Timedelta(days=(3 - when.weekday()) % 7)
-    return willy.forecast(where=location_id, when=thursday, days=look_ahead, margin=safe_margin)
+    return willy.forecast(where=location_id, when=thursday, days=look_ahead, margin=safe_hours)
 
 
 def show_chart(forecast):
@@ -176,11 +175,16 @@ def days(sun):
     """
     Show label for each day at noon.
     """
-    # Get dawn on each day and set time to noon.
     daily = sun.copy()
+    # Position labels at midday.
     daily['date'] = daily['dawn'].map(lambda t: t.replace(hour=12, minute=0, second=0))
+    # Exclude days outside span of chart.
     daily = daily[(daily['date'] > sun['dusk'].min()) & (daily['date'] < sun['dawn'].max())]
-    return alt.Chart(daily).mark_text(color=colour_days, dy=-12, fontSize=16).encode(
+    return alt.Chart(daily).mark_text(
+        color=colour_days,
+        dy=-12,
+        fontSize=16,
+    ).encode(
         x="date:T",
         y=alt.value(0),
         text=alt.Text("date:T", format="%a %d %b"),
@@ -278,4 +282,15 @@ def icons(low):
 
 
 if __name__ == "__main__":
+    st.set_page_config(
+        page_title="Tread Lightly on Bribie Island",
+        page_icon="",
+        layout="wide",
+        initial_sidebar_state="collapsed",
+        menu_items={
+            "About": "Helping visitors to Bribie Island to protect endangered wildlife.",
+            "Get help": "https://biepa.online/contact",
+            "Report a bug": "https://github.com/quantoid/tides/issues",
+        }
+    )
     main()
