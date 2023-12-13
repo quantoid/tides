@@ -64,7 +64,11 @@ def show_chart(forecast):
         # icons(low),
     )
     st.altair_chart(
-        chart.configure_view(stroke="#aaa", strokeWidth=1),
+        chart.configure_view(
+            stroke="#aaa",
+            strokeWidth=1,
+            continuousHeight=500,
+        ),
         use_container_width=True,
     )
 
