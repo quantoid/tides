@@ -4,3 +4,6 @@ base="light"
 [server]
 # https://docs.streamlit.io/library/advanced-features/static-file-serving
 enableStaticServing=true
+
+[client]
+toolbarMode="minimal"
