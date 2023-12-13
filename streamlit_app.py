@@ -67,7 +67,7 @@ def show_chart(forecast):
         chart.configure_view(
             stroke="#aaa",
             strokeWidth=1,
-            continuousHeight=500,
+            # continuousHeight=500,
         ),
         use_container_width=True,
     )
