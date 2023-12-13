@@ -281,13 +281,14 @@ def icons(low):
 
 
 if __name__ == "__main__":
+    # Set up
     st.set_page_config(
         page_title="Tread Lightly on Bribie Island",
-        page_icon="",
+        page_icon="🛞",
         layout="wide",
         initial_sidebar_state="collapsed",
         menu_items={
-            "About": "Helping visitors to Bribie Island to protect endangered wildlife.",
+            "About": "Helping visitors to Bribie Island protect endangered wildlife.",
             "Get help": "https://biepa.online/contact",
             "Report a bug": "https://github.com/quantoid/tides/issues",
         }
