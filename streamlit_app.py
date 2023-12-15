@@ -134,7 +134,6 @@ def show_todo():
         "Planned improvements:\n"
         "\n- Add [focus line on hover](https://altair-viz.github.io/gallery/multiline_tooltip.html)"
         "\n- Add green car icons at low tide."
-        "\n- Select future date in sidebar."
         "\n- Select from predefined locations of 4WD beaches in sidebar."
     )
 
