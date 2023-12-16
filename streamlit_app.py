@@ -289,6 +289,7 @@ def hints(high):
     hint['level'] = high['height'].max() + 0.8
     return alt.Chart(hint).mark_text(
         clip=True,
+        tooltip=False,
         align="center",
         color=colour_best,
         dy=12,
