@@ -4,12 +4,13 @@ when there is less danger to wildlife, especially the
 [critically endangered loggerhead turtle](https://www.biepa.online/post/critically-endangered-next-stop-extinction)
 mothers and hatchlings who nest and hatch on the beach from November to March.
 Take all your litter and food home with you; food scraps attract native and feral animals
-that prey on turtle eggs.
+that prey on turtle eggs and hatchlings.
 
 *Tide data obtained from the [BOM](http://bom.gov.au)
 via [Willy Weather](https://www.willyweather.com.au/info/api.html),
-interpolation formula courtesy of
-[Toitū Te Whenua](https://www.linz.govt.nz/products-services/tides-and-tidal-streams/tide-predictions).*
+interpolation formula thanks to
+[Toitū Te Whenua](https://www.linz.govt.nz/products-services/tides-and-tidal-streams/tide-predictions)
+design by [Darren Jew](https://darrenjew.com).*
 
 *More [news](https://biepa.online/blog) and [events](https://biepa.online/events)
 on the [BIEPA website](https://biepa.online).*
