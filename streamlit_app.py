@@ -96,13 +96,13 @@ def show_chart(forecast):
         crosses(high),
         periods(low, high),
         hints(high),
-        # icons(low),
+        # icons(high),  # not working well
     )
     st.altair_chart(
         chart.configure_view(
             stroke="#aaa",
             strokeWidth=1,
-            # continuousHeight=500,
+            continuousHeight=400,
         ),
         use_container_width=True,
     )
@@ -316,16 +316,20 @@ def crosses(high):
     )
 
 
-def icons(low):
-    low['icon'] = "/app/static/beach4wd.png"
-    return alt.Chart(low).mark_image(aspect=True, align="center", dy=40).encode(
-        x="time:T",
-        y="height:Q",
-        url="icon",
-        tooltip=[
-            alt.Tooltip("time", format=time_format),
-            alt.Tooltip("height", format=".1f"),
-        ],
+def icons(high):
+    noon = high.groupby('day').first()
+    # FIXME Image is not shown at this height on chart.
+    noon['top'] = high['height'].max() * 1.4
+    return alt.Chart(noon).mark_image(
+        tooltip=False,
+        clip=True,
+        aspect=True,
+        align="right",
+        width=50,
+    ).encode(
+        x="dusk:T",
+        y="top:Q",
+        url=alt.value("/app/static/beach4wd.png"),
     )
 
 
