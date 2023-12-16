@@ -5,13 +5,15 @@ from types import SimpleNamespace
 import streamlit as st
 import altair as alt
 import pandas as pd
-import willy
+
+import tide_times
 
 
 location_id = 17924
-time_zone = "Australia/Brisbane"
 look_ahead = 5
 safe_hours = 3
+
+time_zone = "Australia/Brisbane"
 time_format = "%I:%M %p on %a %d %b"
 
 # Colours used on chart.
@@ -26,7 +28,12 @@ def main():
     with st.sidebar:
         settings = show_settings()
     st.image("static/tread-lightly.png", use_column_width="always")
-    forecast = get_forecast(when=settings.start)
+    forecast = tide_times.safe_periods(
+        where=location_id,
+        when=settings.start,
+        days=look_ahead,
+        margin=safe_hours,
+    )
     show_chart(forecast)
     st.image("static/checklist.png", use_column_width="always")
     show_table(forecast)
@@ -48,16 +55,6 @@ def show_settings():
         format="YYYY-MM-DD",
     )
     return settings
-
-
-def get_forecast(when):
-    # Get sun and tide data for next weekend.
-    return willy.forecast(
-        where=location_id,
-        when=when - pd.Timedelta(days=1),
-        days=look_ahead,
-        margin=safe_hours,
-    )
 
 
 def show_chart(forecast):
@@ -92,7 +89,7 @@ def show_chart(forecast):
 
 def show_table(forecast):
     # Show location for tide times.
-    location = forecast['where']
+    location = forecast['location']
     maps = (
         "https://www.google.com/maps/@?api=1&map_action=map&zoom=14&basemap=terrain"
         f"&center={location['lat']}%2C{location['lng']}"
@@ -132,9 +129,10 @@ def show_todo():
     # Our to do list.
     st.warning(
         "Planned improvements:\n"
+        "\n- Position safer times together at noon rather than under low tides."
+        "\n- Select from predefined locations of 4WD beaches in sidebar."
         "\n- Add [focus line on hover](https://altair-viz.github.io/gallery/multiline_tooltip.html)"
         "\n- Add green car icons at low tide."
-        "\n- Select from predefined locations of 4WD beaches in sidebar."
     )
 
 
