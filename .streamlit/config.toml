@@ -1,5 +1,8 @@
 [theme]
+# Always use light theme so images work okay.
 base="light"
+# Use BIEPA sandy colour for highlights.
+primaryColor="#C49A6C"
 
 [server]
 # https://docs.streamlit.io/library/advanced-features/static-file-serving

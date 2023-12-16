@@ -40,13 +40,16 @@ def main():
     show_chart(forecast)
     st.image("static/checklist.png", use_column_width="always")
     show_table(forecast)
-    show_todo()
+    # show_todo()
 
 
 def show_settings():
     with st.sidebar:
         st.image("static/biepa_logo_fullcolour_biepaonly.png")
-        st.info("Find the turtle-friendly times to drive on the beach.")
+        st.info(
+            "Find the turtle-friendly times to drive on the beach."
+            " Be turtle-aware!"
+        )
         # Dashboard settings.
         settings = SimpleNamespace()
         choose_where(settings)
@@ -150,7 +153,6 @@ def show_todo():
     # Our to do list.
     st.warning(
         "Planned improvements:\n"
-        "\n- Position safer times together at noon rather than under low tides."
         "\n- Add [focus line on hover](https://altair-viz.github.io/gallery/multiline_tooltip.html)"
         "\n- Add green car icons at low tide."
     )
