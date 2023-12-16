@@ -47,7 +47,7 @@ def show_settings():
     with st.sidebar:
         st.image("static/biepa_logo_fullcolour_biepaonly.png")
         st.title("Tread Lightly")
-        st.markdown("Turtle-friendly times to drive on the beach.")
+        st.info("Find the turtle-friendly times to drive on the beach.")
         # Dashboard settings.
         settings = SimpleNamespace()
         choose_where(settings)
@@ -61,6 +61,7 @@ def choose_where(settings):
         help="The chart will show tide heights for the closest monitoring station.",
         label="Where will you be driving?",
         options=locations,
+        index=0,  # Default to first location.
         format_func=locations.get,
     )
 
