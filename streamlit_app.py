@@ -46,7 +46,6 @@ def main():
 def show_settings():
     with st.sidebar:
         st.image("static/biepa_logo_fullcolour_biepaonly.png")
-        st.title("Tread Lightly")
         st.info("Find the turtle-friendly times to drive on the beach.")
         # Dashboard settings.
         settings = SimpleNamespace()
