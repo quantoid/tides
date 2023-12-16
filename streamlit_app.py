@@ -1,5 +1,20 @@
 """
-Show chart of tide heights with driving times that are safer for turtles.
+The safest times are {margin} hours either side of low tide and between dawn and dusk
+when there is less danger to wildlife, especially the
+[critically endangered loggerhead turtle](https://www.biepa.online/post/critically-endangered-next-stop-extinction)
+mothers and hatchlings who nest and hatch on the beach from November to March.
+Take all your litter and food home with you; food scraps attract native and feral animals
+that prey on turtle eggs.
+
+*Tide data obtained from the [BOM](http://bom.gov.au)
+via [Willy Weather](https://www.willyweather.com.au/info/api.html),
+interpolation formula courtesy of
+[Toitū Te Whenua](https://www.linz.govt.nz/products-services/tides-and-tidal-streams/tide-predictions).*
+
+*More [news](https://biepa.online/blog) and [events](https://biepa.online/events)
+on the [BIEPA website](https://biepa.online).*
+
+&copy; 2023, Bribie Island Environmental Protection Association Inc.
 """
 from types import SimpleNamespace
 import streamlit as st
@@ -41,6 +56,8 @@ def main():
     st.image("static/checklist.png", use_column_width="always")
     show_table(forecast)
     # show_todo()
+    # Use docstring at top of this module for credits etc.
+    st.markdown(__doc__.format(margin=safe_hours))
 
 
 def show_settings():
@@ -119,7 +136,7 @@ def show_table(forecast):
         f"&center={location['lat']}%2C{location['lng']}"
     )
     st.markdown(
-        "---\nTurtle-friendly driving times this weekend for beaches near"
+        "---\nTurtle-friendly driving times for the beach near"
         f" [{location['name']}, {location['region']}, {location['state']}]({maps})"
         f" where times are in {location['timeZone']} time-zone."
     )
@@ -137,16 +154,6 @@ def show_table(forecast):
                 'latest': st.column_config.DatetimeColumn(label="To", width="medium", format="h:mm a"),
             },
         )
-    st.markdown(
-        f"\n\nThe safest times are {safe_hours} hours either side of low tide and between dawn and dusk"
-        " when there is less danger to wildlife, including the"
-        " [critically endangered loggerhead turtle]"
-        "(https://www.biepa.online/post/critically-endangered-next-stop-extinction)"
-        " mothers and hatchlings who nest and hatch on the beach from November to March."
-        "\n\n*Tide data from the BOM via [Willy Weather](https://www.willyweather.com.au/info/api.html)*."
-        f"\n\n*More [news](https://biepa.online/blog) and [events](https://biepa.online/events) on the BIEPA website.*"
-        "\n\n&copy; 2023, Bribie Island Environmental Protection Association Inc."
-    )
 
 
 def show_todo():
