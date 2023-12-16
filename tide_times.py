@@ -23,7 +23,7 @@ def safe_periods(where: int, when: pd.Timestamp, days: int, margin: int) -> dict
     """
     forecast = willy_weather.forecast(
         station=where,
-        start=when - pd.Timedelta(days=1),
+        start=when,
         days=days,
     )
     forecast['tides'] = add_driving(forecast, margin)

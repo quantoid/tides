@@ -8,8 +8,11 @@ import pandas as pd
 
 import tide_times
 
+locations = {
+    17924: "Ocean Beach, North Bribie Island",
+    6781: "Beach Access, Woorim",
+}
 
-location_id = 17924
 look_ahead = 5
 safe_hours = 3
 
@@ -25,12 +28,12 @@ colour_days = "#767676"  # grey
 
 
 def main():
-    with st.sidebar:
-        settings = show_settings()
+    settings = show_settings()
     st.image("static/tread-lightly.png", use_column_width="always")
+    # Get forecast two days either side of driving date.
     forecast = tide_times.safe_periods(
-        where=location_id,
-        when=settings.start,
+        where=settings.where,
+        when=settings.when - pd.Timedelta(days=2),
         days=look_ahead,
         margin=safe_hours,
     )
@@ -41,20 +44,37 @@ def main():
 
 
 def show_settings():
-    settings = SimpleNamespace()
-    st.image("static/biepa_logo_fullcolour_biepaonly.png")
-    st.title("Tread Lightly")
-    st.markdown("Turtle-friendly times to drive on the beach.")
+    with st.sidebar:
+        st.image("static/biepa_logo_fullcolour_biepaonly.png")
+        st.title("Tread Lightly")
+        st.markdown("Turtle-friendly times to drive on the beach.")
+        # Dashboard settings.
+        settings = SimpleNamespace()
+        choose_where(settings)
+        choose_when(settings)
+    return settings
+
+
+def choose_where(settings):
+    settings.where = st.selectbox(
+        key="location",
+        help="The chart will show tide heights for the closest monitoring station.",
+        label="Where will you be driving?",
+        options=locations,
+        format_func=locations.get,
+    )
+
+
+def choose_when(settings):
     today = pd.Timestamp.utcnow().tz_convert(time_zone).date()
-    friday = today + pd.Timedelta(days=(4 - today.weekday()) % 7)
-    settings.start = st.date_input(
+    saturday = today + pd.Timedelta(days=(5 - today.weekday()) % 7)
+    settings.when = st.date_input(
         key="start",
-        help="Choose a date from which to see safer driving times",
-        label="Start date",
-        value=friday,
+        help="The chart will show tides for three days around this date.",
+        label="When will you be driving?",
+        value=saturday,
         format="YYYY-MM-DD",
     )
-    return settings
 
 
 def show_chart(forecast):
@@ -130,7 +150,6 @@ def show_todo():
     st.warning(
         "Planned improvements:\n"
         "\n- Position safer times together at noon rather than under low tides."
-        "\n- Select from predefined locations of 4WD beaches in sidebar."
         "\n- Add [focus line on hover](https://altair-viz.github.io/gallery/multiline_tooltip.html)"
         "\n- Add green car icons at low tide."
     )
