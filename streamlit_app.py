@@ -94,7 +94,8 @@ def show_chart(forecast):
         safe(tides, True),
         safe(tides, False),
         crosses(high),
-        hints(low),
+        periods(low, high),
+        hints(high),
         # icons(low),
     )
     st.altair_chart(
@@ -153,25 +154,6 @@ def show_todo():
         "\n- Add [focus line on hover](https://altair-viz.github.io/gallery/multiline_tooltip.html)"
         "\n- Add green car icons at low tide."
     )
-
-
-def select_location():
-    search = st.text_input(
-        key="search",
-        help="Find locations for which we have data on tides.",
-        label="Search by postcode or name",
-    )
-    locations = willy.search(search) if search else []
-    location = st.selectbox(
-        key="location",
-        help="Choose a location to see tide times.",
-        label="Select location",
-        options=locations,
-        disabled=not locations,
-        format_func=lambda i: i['name'],
-    )
-    st.text(f"id = {location['id']}")
-    return location
 
 
 def darkness(sun):
@@ -275,17 +257,46 @@ def safe(tides, okay):
     )
 
 
-def hints(low):
-    time = "%I:%M%p"
+def periods(low, high):
+    time_only = "%I:%M%p"
     low['period'] = (
-        "✓ " + low['earliest'].dt.strftime(time).str.lstrip('0')
-        + " - " + low['latest'].dt.strftime(time).str.lstrip('0')
+        "✓ " + low['earliest'].dt.strftime(time_only).str.lstrip('0')
+        + " - " + low['latest'].dt.strftime(time_only).str.lstrip('0')
     ).str.lower()
-    return alt.Chart(low).mark_text(clip=True, color=colour_best, dy=12, fontSize=16).encode(
-        x="time:T",
-        y="height:Q",
+    # Find maximum height to show times above that
+    # using steps to get positions of text labels.
+    highest = high['height'].max()
+    steps = highest * 40 / 400
+    # Rank tides by time of day and post labels with the earliest above the latest.
+    low['rank'] = low.groupby('day', as_index=False)['time'].rank()
+    low['post'] = highest + (4 - low['rank']) * steps
+    return alt.Chart(low).mark_text(
+        clip=True,
+        align="center",
+        color=colour_best,
+        dy=12,
+        fontSize=16,
+    ).encode(
+        x="noon:T",
+        y="post:Q",
         text="period:N",
         tooltip=["day", "period"],
+    )
+
+
+def hints(high):
+    hint = high.groupby('day', as_index=False).first()
+    hint['level'] = high['height'].max() + 0.8
+    return alt.Chart(hint).mark_text(
+        clip=True,
+        align="center",
+        color=colour_best,
+        dy=12,
+        fontSize=12,
+    ).encode(
+        x="noon:T",
+        y="level:Q",
+        text=alt.value("travel between"),
     )
 
 

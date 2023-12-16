@@ -69,11 +69,12 @@ def add_safety(tides, sun, margin):
                 # Fill rows since last high tide with this time.
                 interval = (tides['time'] > high) & (tides['time'] < low)
                 tides.loc[interval, 'low'] = low
-    # Add dawn and dusk times for each date.
+    # Add dawn, noon, and dusk times for each date.
     days = sun.copy()
     days['day'] = days['dawn'].dt.date
     tides['day'] = tides['time'].dt.date
     tides = tides.merge(days, how="left", on='day')
+    tides['noon'] = tides['dawn'].dt.floor('D') + pd.Timedelta(12, unit='h')
     # Add whether 3 hours either side of low tide.
     low_tide = (tides['type'] != "high") & (abs(tides['low'] - tides['time']) < pd.Timedelta(hours=margin))
     in_daylight = (tides['time'] >= tides['dawn']) & (tides['time'] <= tides['dusk'])
