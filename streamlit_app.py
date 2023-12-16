@@ -9,8 +9,8 @@ that prey on turtle eggs and hatchlings.
 *Tide data obtained from the [BOM](http://bom.gov.au)
 via [Willy Weather](https://www.willyweather.com.au/info/api.html),
 interpolation formula thanks to
-[Toitū Te Whenua](https://www.linz.govt.nz/products-services/tides-and-tidal-streams/tide-predictions)
-design by [Darren Jew](https://darrenjew.com).*
+[Toitū Te Whenua](https://www.linz.govt.nz/products-services/tides-and-tidal-streams/tide-predictions),
+concept and design by [Darren Jew](https://darrenjew.com).*
 
 *More [news](https://biepa.online/blog) and [events](https://biepa.online/events)
 on the [BIEPA website](https://biepa.online).*
