@@ -281,7 +281,6 @@ def periods(low, high):
     # Rank tides by time of day and post labels with the earliest above the latest.
     low['rank'] = low.groupby('day', as_index=False)['time'].rank()
     low['post'] = highest + (4 - low['rank']) * steps
-    st.dataframe(low)
     return alt.Chart(low).mark_text(
         clip=True,
         align="center",
