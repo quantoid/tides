@@ -147,7 +147,7 @@ def show_table(forecast):
         st.error("No tide data available for selected location")
     else:
         st.dataframe(
-            data=tides[tides['type'] == "low"][['day', 'earliest', 'latest']],
+            data=tides[(tides['type'] == "low") & tides['safe']][['day', 'earliest', 'latest']],
             hide_index=True,
             column_config={
                 'day': st.column_config.DateColumn(label="Day", width="medium", format="ddd D MMM YYYY"),
@@ -269,19 +269,19 @@ def safe(tides, okay):
 
 def periods(low, high):
     time_only = "%I:%M%p"
-    low['period'] = (
-        "✓ " + low['earliest'].dt.strftime(time_only).str.lstrip('0')
-        + " - " + low['latest'].dt.strftime(time_only).str.lstrip('0')
+    safer = low[low['safe']]
+    safer['period'] = (
+        "✓ " + safer['earliest'].dt.strftime(time_only).str.lstrip('0')
+        + " - " + safer['latest'].dt.strftime(time_only).str.lstrip('0')
     ).str.lower()
-    low = low.dropna(subset='period')
     # Find maximum height to show times above that
     # using steps to get positions of text labels.
     highest = high['height'].max()
     steps = highest * 40 / 400
     # Rank tides by time of day and post labels with the earliest above the latest.
-    low['rank'] = low.groupby('day', as_index=False)['time'].rank()
-    low['post'] = highest + (4 - low['rank']) * steps
-    return alt.Chart(low).mark_text(
+    safer['rank'] = safer.groupby('day', as_index=False)['time'].rank()
+    safer['post'] = highest + (4 - safer['rank']) * steps
+    return alt.Chart(safer).mark_text(
         clip=True,
         align="center",
         color=colour_best,
