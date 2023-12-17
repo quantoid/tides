@@ -273,6 +273,7 @@ def periods(low, high):
         "✓ " + low['earliest'].dt.strftime(time_only).str.lstrip('0')
         + " - " + low['latest'].dt.strftime(time_only).str.lstrip('0')
     ).str.lower()
+    low = low.dropna(subset='period')
     # Find maximum height to show times above that
     # using steps to get positions of text labels.
     highest = high['height'].max()
@@ -280,6 +281,7 @@ def periods(low, high):
     # Rank tides by time of day and post labels with the earliest above the latest.
     low['rank'] = low.groupby('day', as_index=False)['time'].rank()
     low['post'] = highest + (4 - low['rank']) * steps
+    st.dataframe(low)
     return alt.Chart(low).mark_text(
         clip=True,
         align="center",
