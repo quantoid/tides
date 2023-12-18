@@ -146,8 +146,12 @@ def show_table(forecast):
     if tides is None:
         st.error("No tide data available for selected location")
     else:
-        tides = tides[tides['type'] == "low"]
-        tides = tides[tides['earliest'].notnull() & tides['latest'].notnull()]
+        # Exclude times outside chart time window.
+        earliest = tides['day'].min() + pd.Timedelta(days=1)
+        latest = tides['day'].max() - pd.Timedelta(days=1)
+        tides = tides[(tides['day'] >= earliest) & (tides['day'] <= latest)]
+        # Get start and end of safer times around low tide.
+        tides = tides[(tides['type'] == "low") & tides['earliest'].notnull() & tides['latest'].notnull()]
         st.dataframe(
             data=tides[['day', 'earliest', 'latest']],
             hide_index=True,
