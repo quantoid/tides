@@ -201,6 +201,7 @@ def days(sun):
     Show label for each day on chart at noon.
     """
     return alt.Chart(sun[1:-1]).mark_text(
+        clip=False,
         color=colour_days,
         dy=-12,
         fontSize=16,
