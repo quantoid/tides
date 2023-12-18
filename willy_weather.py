@@ -92,6 +92,7 @@ def tide_times(tides: dict, zone: str) -> pd.DataFrame:
 
 def interpolate_heights(extremes: pd.DataFrame) -> pd.DataFrame:
     # Add intermediate heights between low and high tides.
+    units = extremes['units'].unique()[0]
     added = []
     last = None
     for index, this in extremes.iterrows():
@@ -112,6 +113,7 @@ def interpolate_heights(extremes: pd.DataFrame) -> pd.DataFrame:
                             t2=this['time'],
                             h2=this['height'],
                         ),
+                        units=units,
                         type="calc",
                     ))
             last = this

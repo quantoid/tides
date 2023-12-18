@@ -146,8 +146,10 @@ def show_table(forecast):
     if tides is None:
         st.error("No tide data available for selected location")
     else:
+        tides = tides[tides['type'] == "low"]
+        tides = tides[tides['earliest'].notnull() & tides['latest'].notnull()]
         st.dataframe(
-            data=tides[(tides['type'] == "low") & tides['safe']][['day', 'earliest', 'latest']],
+            data=tides[['day', 'earliest', 'latest']],
             hide_index=True,
             column_config={
                 'day': st.column_config.DateColumn(label="Day", width="medium", format="ddd D MMM YYYY"),
@@ -269,7 +271,7 @@ def safe(tides, okay):
 
 def periods(low, high):
     time_only = "%I:%M%p"
-    safer = low[low['safe']]
+    safer = low[low['earliest'].notnull() & low['latest'].notnull()].copy()
     safer['period'] = (
         "✓ " + safer['earliest'].dt.strftime(time_only).str.lstrip('0')
         + " - " + safer['latest'].dt.strftime(time_only).str.lstrip('0')
