@@ -57,11 +57,12 @@ def get(path: str, **kwargs) -> dict:
 
 def sun_times(sun: dict, zone: str) -> pd.DataFrame:
     """
-    Get sun forecast as dawn and dusk times in given time-zone.
+    Get sun forecast as dawn, noon, and dusk times in given time-zone.
     """
     return pd.DataFrame([
         dict(
             dawn=pd.Timestamp(d['entries'][0]['firstLightDateTime']).tz_localize(zone),
+            noon=pd.Timestamp(d['dateTime']).tz_localize(zone) + pd.Timedelta(hours=12),
             dusk=pd.Timestamp(d['entries'][0]['lastLightDateTime']).tz_localize(zone),
         ) for d in sun['days']
     ])
