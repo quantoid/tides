@@ -303,7 +303,7 @@ def periods(low, high):
 
 def hints(high):
     hint = high.groupby('day', as_index=False).first()
-    hint['level'] = high['height'].max() + 0.8
+    hint['level'] = high['height'].max() + 0.85
     return alt.Chart(hint).mark_text(
         clip=True,
         tooltip=False,
