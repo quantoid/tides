@@ -25,8 +25,8 @@ import pandas as pd
 import tide_times
 
 locations = {
-    17924: "Ocean Beach, North Bribie Island",
     6781: "Beach Access, Woorim",
+    17924: "Ocean Beach, North Bribie Island",
 }
 
 look_ahead = 5
