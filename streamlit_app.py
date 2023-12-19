@@ -45,7 +45,7 @@ colour_days = "#767676"  # grey
 
 def main():
     settings = show_settings()
-    st.image("static/tread-lightly.png", use_column_width="always")
+    st.image("static/tread-lightly.jpg", use_column_width="always")
     # Get forecast two days either side of driving date.
     forecast = tide_times.safe_periods(
         where=settings.where,
@@ -54,7 +54,7 @@ def main():
         margin=safe_hours,
     )
     show_chart(forecast)
-    st.image("static/checklist.png", use_column_width="always")
+    st.image("static/checklist.jpg", use_column_width="always")
     show_table(forecast)
     # Use docstring at top of this module for credits etc.
     st.markdown(__doc__.format(margin=safe_hours))
