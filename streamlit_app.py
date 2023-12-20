@@ -161,8 +161,9 @@ def show_table(forecast):
             },
         )
     st.success(
-        "Change the location and date in the settings"
-        " &mdash; tap the ＞ button at top left if you can't see the settings."
+        "You can change the location and date in the settings"
+        " &mdash; tap the ＞ button at top left if you can't see the settings.  \n"
+        "If using your phone, rotate to landscape mode for a better view of the chart."
     )
 
 
