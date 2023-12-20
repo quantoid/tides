@@ -139,8 +139,6 @@ def show_table(forecast):
         "---\nTurtle-friendly driving times for the beach near"
         f" [{location['name']}, {location['region']}, {location['state']}]({maps})"
         f" where times are in {location['timeZone']} time-zone."
-        " Change the location and date in the settings"
-        " (tap the [＞] button at top left if you can't see the settings)."
     )
     # Show safe periods in a table for small screens.
     tides = forecast['tides']
@@ -162,6 +160,10 @@ def show_table(forecast):
                 'latest': st.column_config.DatetimeColumn(label="To", width="medium", format="h:mm a"),
             },
         )
+    st.success(
+        "Change the location and date in the settings"
+        " &mdash; tap the ＞ button at top left if you can't see the settings."
+    )
 
 
 def darkness(sun):
