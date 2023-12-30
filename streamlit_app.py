@@ -6,6 +6,8 @@ mothers and hatchlings who nest and hatch on the beach from November to March.
 Take all your litter and food home with you; food scraps attract native and feral animals
 that prey on turtle eggs and hatchlings.
 
+Please send helpful feedback to the BIEPA Wildlife Team at: wildlife@biepa.online
+
 *Tide data obtained from the [BOM](http://bom.gov.au)
 via [Willy Weather](https://www.willyweather.com.au/info/api.html),
 interpolation formula thanks to
