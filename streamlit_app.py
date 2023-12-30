@@ -88,13 +88,10 @@ def choose_where(settings):
 
 
 def choose_when(settings):
-    today = pd.Timestamp.utcnow().tz_convert(time_zone).date()
-    saturday = today + pd.Timedelta(days=(5 - today.weekday()) % 7)
     settings.when = st.date_input(
         key="start",
         help="The chart will show tides for three days around this date.",
         label="When will you be driving?",
-        value=saturday,
         format="YYYY-MM-DD",
     )
 
