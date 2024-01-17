@@ -82,7 +82,7 @@ def show_sidebar():
 
 def show_settings():
     settings = SimpleNamespace()
-    left, right = st.columns(2, gap="large")
+    left, right = st.columns(2)
     with left:
         settings.when = st.date_input(
             key="start",
