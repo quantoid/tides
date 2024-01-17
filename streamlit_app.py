@@ -16,8 +16,6 @@ concept and design by [Darren Jew](https://darrenjew.com).*
 
 *More [news](https://biepa.online/blog) and [events](https://biepa.online/events)
 on the [BIEPA website](https://biepa.online).*
-
-&copy; 2023, Bribie Island Environmental Protection Association Inc.
 """
 from types import SimpleNamespace
 import streamlit as st
@@ -46,54 +44,62 @@ colour_days = "#767676"  # grey
 
 
 def main():
-    settings = show_settings()
+    with st.sidebar:
+        show_sidebar()
+    # Main area with placeholders for tides and times.
     st.image("static/tread-lightly.jpg", use_column_width="always")
-    # Get forecast two days either side of driving date.
+    tides = st.container()
+    st.image("static/checklist.jpg", use_column_width="always")
+    st.success("🔄 &nbsp; If using your phone, rotate to landscape mode for a better view of the chart.")
+    settings = show_settings()
+    times = st.container()
+    # Get forecast two days either side of driving date and show tides and times.
     forecast = tide_times.safe_periods(
         where=settings.where,
         when=settings.when - pd.Timedelta(days=2),
         days=look_ahead,
         margin=safe_hours,
     )
-    show_chart(forecast)
-    st.image("static/checklist.jpg", use_column_width="always")
-    show_table(forecast)
+    with tides:
+        show_chart(forecast)
+    with times:
+        show_table(forecast)
     # Use docstring at top of this module for credits etc.
     st.markdown(__doc__.format(margin=safe_hours))
 
 
+def show_sidebar():
+    st.image("static/biepa_logo_fullcolour_biepaonly.png")
+    st.info(
+        "Find the turtle-friendly times to drive on the beach."
+        " Be turtle-aware!"
+    )
+    st.markdown(
+        "<small>&copy; 2023, Bribie Island Environmental Protection Association Inc.</small>",
+        unsafe_allow_html=True,
+    )
+
+
 def show_settings():
-    with st.sidebar:
-        st.image("static/biepa_logo_fullcolour_biepaonly.png")
-        st.info(
-            "Find the turtle-friendly times to drive on the beach."
-            " Be turtle-aware!"
+    settings = SimpleNamespace()
+    left, right = st.columns(2, gap="large")
+    with left:
+        settings.when = st.date_input(
+            key="start",
+            help="The chart will show tides for three days around this date.",
+            label="When will you be driving?",
+            format="YYYY-MM-DD",
         )
-        # Dashboard settings.
-        settings = SimpleNamespace()
-        choose_where(settings)
-        choose_when(settings)
+    with right:
+        settings.where = st.selectbox(
+            key="location",
+            help="The chart will show tide heights for the closest monitoring station.",
+            label="Where will you be driving?",
+            options=locations,
+            index=0,  # Default to first location.
+            format_func=locations.get,
+        )
     return settings
-
-
-def choose_where(settings):
-    settings.where = st.selectbox(
-        key="location",
-        help="The chart will show tide heights for the closest monitoring station.",
-        label="Where will you be driving?",
-        options=locations,
-        index=0,  # Default to first location.
-        format_func=locations.get,
-    )
-
-
-def choose_when(settings):
-    settings.when = st.date_input(
-        key="start",
-        help="The chart will show tides for three days around this date.",
-        label="When will you be driving?",
-        format="YYYY-MM-DD",
-    )
 
 
 def show_chart(forecast):
@@ -135,7 +141,7 @@ def show_table(forecast):
         f"&center={location['lat']}%2C{location['lng']}"
     )
     st.markdown(
-        "---\nTurtle-friendly driving times for the beach near"
+        "Turtle-friendly driving times for the beach near"
         f" [{location['name']}, {location['region']}, {location['state']}]({maps})"
         f" where times are in {location['timeZone']} time-zone."
     )
@@ -159,11 +165,6 @@ def show_table(forecast):
                 'latest': st.column_config.DatetimeColumn(label="To", width="medium", format="h:mm a"),
             },
         )
-    st.success(
-        "You can change the location and date in the settings"
-        " &mdash; tap the ＞ button at top left if you can't see the settings.  \n"
-        "If using your phone, rotate to landscape mode for a better view of the chart."
-    )
 
 
 def darkness(sun):
