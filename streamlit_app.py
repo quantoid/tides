@@ -85,14 +85,15 @@ def show_settings():
     left, right = st.columns(2)
     with left:
         settings.when = st.date_input(
-            key="start",
+            key="when",
             help="The chart will show tides for three days around this date.",
             label="When will you be driving?",
+            value=url_value(key="when", convert=to_date, default="today"),
             format="YYYY-MM-DD",
         )
     with right:
         settings.where = st.selectbox(
-            key="location",
+            key="where",
             help="The chart will show tide heights for the closest monitoring station.",
             label="Where will you be driving?",
             options=locations,
@@ -100,6 +101,20 @@ def show_settings():
             format_func=locations.get,
         )
     return settings
+
+
+def url_value(key, convert=None, default=None):
+    value = st.session_state.get(key)
+    if value is not None:
+        return value
+    value = st.experimental_get_query_params().get(key)
+    if value is not None:
+        return convert(value[0]) if convert else value[0]
+    return default
+
+
+def to_date(string):
+    return pd.Timestamp(string).date()
 
 
 def show_chart(forecast):
