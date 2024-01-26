@@ -371,6 +371,7 @@ if __name__ == "__main__":
         page_title="Tread Lightly on Bribie Island",
         page_icon="🛞",
         layout="wide",
+        initial_sidebar_state="collapsed",
         menu_items={
             "About": "Helping visitors to Bribie Island protect endangered wildlife.",
             "Get help": "https://biepa.online/contact",
