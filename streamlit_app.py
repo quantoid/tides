@@ -12,6 +12,7 @@ Please send helpful feedback to the BIEPA Wildlife Team at: wildlife@biepa.onlin
 via [Willy Weather](https://www.willyweather.com.au/info/api.html),
 interpolation formula thanks to
 [Toitū Te Whenua](https://www.linz.govt.nz/products-services/tides-and-tidal-streams/tide-predictions),
+coding by Mike Howells,
 concept and design by [Darren Jew](https://darrenjew.com).*
 
 *More [news](https://biepa.online/blog) and [events](https://biepa.online/events)
