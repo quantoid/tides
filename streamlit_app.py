@@ -30,7 +30,7 @@ locations = {
     17924: "Northern Access Track, Ocean Beach",
 }
 
-look_ahead = 5
+days_shown = 5
 safe_hours = 3
 
 time_zone = "Australia/Brisbane"
@@ -54,11 +54,11 @@ def main():
     st.success("🔄 &nbsp; If using your phone, rotate to landscape mode for a better view of the chart.")
     settings = show_settings()
     times = st.container()
-    # Get forecast two days either side of driving date and show tides and times.
+    # Get forecast equal days either side of driving date and show tides and times.
     forecast = tide_times.safe_periods(
         where=settings.where,
-        when=settings.when - pd.Timedelta(days=2),
-        days=look_ahead,
+        when=settings.when - pd.Timedelta(days=int(days_shown / 2)),
+        days=days_shown,
         margin=safe_hours,
     )
     with tides:
