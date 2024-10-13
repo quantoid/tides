@@ -88,6 +88,6 @@ def add_limits(tides):
         latest=('time', "max"),
     )
     # Round to nearest 5 minutes (from=up, to=down).
-    limits['earliest'] = limits['earliest'].transform(lambda t: t.ceil(freq='5T'))
-    limits['latest'] = limits['latest'].transform(lambda t: t.floor(freq='5T'))
+    limits['earliest'] = limits['earliest'].transform(lambda t: t.ceil(freq='5min'))
+    limits['latest'] = limits['latest'].transform(lambda t: t.floor(freq='5min'))
     return tides.merge(limits, how="left", on='low')
