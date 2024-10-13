@@ -119,15 +119,9 @@ def show_chart(forecast):
     low = tides[tides["type"] == "low"].copy()
     high = tides[tides["type"] == "high"].copy()
     # Create layered chart of tide heights and safer times.
+    # NOTE: Order is important as layers overlap.
     chart = alt.layer(
-        chart_layers.darkness(sun).add_selection(
-            # Allow panning on touch screens.
-            alt.selection(
-                type="interval",
-                bind="scales",
-                translate="[touchstart[event.touches.length===2], touchend] > touchmove",
-            ),
-        ),
+        chart_layers.darkness(sun),
         chart_layers.days(sun),
         chart_layers.heights(tides),
         chart_layers.curve(tides, safe=True),
