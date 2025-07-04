@@ -39,9 +39,9 @@ def main():
     with st.sidebar:
         show_sidebar()
     # Main area with placeholders for tides and times.
-    st.image("static/tread-lightly.jpg", use_column_width="always")
+    st.image("static/tread-lightly.jpg", use_container_width="always")
     tides = st.container()
-    st.image("static/checklist.jpg", use_column_width="always")
+    st.image("static/checklist.jpg", use_container_width="always")
     st.success("🔄 &nbsp; If using your phone, rotate to landscape mode for a better view of the chart.")
     settings = show_settings()
     times = st.container()
