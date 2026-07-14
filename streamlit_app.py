@@ -19,6 +19,6 @@ with right:
         "You can also reach the new app from the BIEPA website:"
         " [www.biepa.online/tread-lightly](https://biepa.online/tread-lightly)"
     )
-st.caption("&copy; Bribie Island Environmental Protection Association Inc.")
+st.caption("&copy; 2026, Bribie Island Environmental Protection Association Inc.")
 # with st.container(horizontal=True, horizontal_alignment="center"):
 #     st.image("static/biepa_logo_fullcolour_landscape.png")
